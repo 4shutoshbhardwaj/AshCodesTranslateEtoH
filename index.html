@@ -1,0 +1,113 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>translate app</title>
+    <style>
+        body{
+            text-align: center;
+            background-color: black;
+        }
+        h1,h2{
+            color: white;
+        }
+        #container{
+            display: flex;
+
+            min-height: 500px;
+
+        }
+        #container>div{
+            flex: 1;
+            /* border: 1px solid red; */
+            margin: 5px;
+        }
+        #input-text{
+            color:white;
+            background-color: black;
+            width: 90%;
+            height: 80%;
+        }
+        #translate-button{
+            display: block;
+            padding: 7px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 32px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ash Codes Translations</h1>
+        <h2>English to हिंदी only</h2>
+    <div id="container">
+        
+        <div id="input-section">
+            <textarea name="" id="input-text" cols="30" rows="10" placeholder="English Text here"></textarea>
+            <button id="translate-button" onclick="translateText()">TRANSLATE TEXT</button>
+        </div>
+        <div id="output-section">
+            <h1 id="translated-text"></h1>
+        </div>
+    </div>
+</body>
+<script>
+    let p=document.querySelector("#translated-text");
+    
+    
+    // arrow function
+
+    const translateText=async()=>{
+        try {
+            let inputText=document.querySelector("#input-text").value;
+            let res=await fetch(`https://libretranslate.de/translate`,{
+                method:"Post",
+                body:JSON.stringify({
+                    q:inputText,
+                    source:"en",
+                    target:"hi",
+                    format:"text",
+                }),
+                headers:{'content-Type':'Application/json'},
+            })
+            let data=await res.json();
+            console.log(data);
+            displayData(data,p);
+        } catch (error) {
+            console.log(error);
+        }
+        function displayData(data,parentNode){
+            parentNode.textContent=data.translatedText;
+        }
+    }
+
+
+    // normal function
+
+
+    // async function translateText(){
+    //     try {
+    //         let inputText=document.querySelector("#input-text").value;
+    //         let res=await fetch(`https://libretranslate.de/translate`,{
+    //             method:"Post",
+    //             body:JSON.stringify({
+    //                 q:inputText,
+    //                 source:"en",
+    //                 target:"hi",
+    //                 format:"text",
+    //             }),
+    //             headers:{'content-Type':'Application/json'},
+    //         })
+    //         let data=await res.json();
+    //         console.log(data);
+    //         displayData(data,p);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    //     function displayData(data,parentNode){
+    //         parentNode.textContent=data.translatedText;
+    //     }
+    // }
+</script>
+</html>
